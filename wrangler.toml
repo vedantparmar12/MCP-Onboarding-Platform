@@ -1,0 +1,56 @@
+name = "onboarding-intelligence-hub"
+main = "src/worker.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+name = "onboarding-intelligence-hub"
+routes = [
+  { pattern = "onboarding-hub.yourdomain.com/*", zone_name = "yourdomain.com" }
+]
+
+[env.staging]
+name = "onboarding-intelligence-hub-staging"
+routes = [
+  { pattern = "staging.onboarding-hub.yourdomain.com/*", zone_name = "yourdomain.com" }
+]
+
+# KV namespaces for session storage
+[[kv_namespaces]]
+binding = "SESSIONS"
+preview_id = "your-preview-namespace-id"
+id = "your-production-namespace-id"
+
+[[kv_namespaces]]
+binding = "CACHE"
+preview_id = "your-cache-preview-id"
+id = "your-cache-production-id"
+
+# D1 Database bindings
+[[d1_databases]]
+binding = "ONBOARDING_DB"
+database_name = "onboarding-intelligence"
+database_id = "your-d1-database-id"
+
+# R2 Storage for documents
+[[r2_buckets]]
+binding = "DOCUMENTS"
+bucket_name = "onboarding-documents"
+preview_bucket_name = "onboarding-documents-preview"
+
+# Environment variables (non-secret)
+[vars]
+ENVIRONMENT = "production"
+LOG_LEVEL = "info"
+NODE_ENV = "production"
+ENABLE_MONITORING = "true"
+SENTRY_TRACES_SAMPLE_RATE = "0.1"
+ALLOWED_GITHUB_USERS = "your-github-username,admin-user"
+MAX_UPLOAD_SIZE = "10485760"
+CACHE_TTL = "3600"
+
+# Secrets (set using wrangler secret put)
+# SENTRY_DSN - Sentry DSN for error tracking
+# ANTHROPIC_API_KEY - Anthropic API key for GenAI
+# JWT_SECRET - JWT secret for authentication
+# DATABASE_URL - Database connection string
